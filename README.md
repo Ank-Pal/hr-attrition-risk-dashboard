@@ -1,10 +1,11 @@
 # 👥 HR Attrition Risk Intelligence Dashboard & Predictive Analytics
 
-[![Python](https://img.shields.io/badge/Python-3.12-blue.svg)](https://www.python.org/)
-[![Machine Learning](https://img.shields.io/badge/Scikit--Learn-Logistic%20Regression-orange.svg)](https://scikit-learn.org/)
+[![Live Interactive Dashboard](https://img.shields.io/badge/Live%20Demo-Interactive%20Dashboard-e11d48?style=for-the-badge&logo=googlechrome&logoColor=white)](https://ank-pal.github.io/hr-attrition-risk-dashboard/)
+[![Python](https://img.shields.io/badge/Python-3.12-3776AB?style=flat&logo=python&logoColor=white)](https://www.python.org/)
+[![Scikit-Learn](https://img.shields.io/badge/Scikit--Learn-Logistic%20Regression-F7931E?style=flat&logo=scikit-learn&logoColor=white)](https://scikit-learn.org/)
 [![Holdout Accuracy](https://img.shields.io/badge/Holdout%20Accuracy-86%25-brightgreen.svg)]()
-[![Database](https://img.shields.io/badge/Database-SQLite%20Star%20Schema-003B57.svg)](https://www.sqlite.org/)
-[![Business Intelligence](https://img.shields.io/badge/BI-Power%20BI%20DAX-F2C811.svg)](https://powerbi.microsoft.com/)
+[![Database](https://img.shields.io/badge/Database-SQLite%20Star%20Schema-003B57?style=flat&logo=sqlite&logoColor=white)](https://www.sqlite.org/)
+[![Business Intelligence](https://img.shields.io/badge/BI-Power%20BI%20DAX-F2C811?style=flat&logo=powerbi&logoColor=black)](https://powerbi.microsoft.com/)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 An end-to-end People Analytics and machine learning system evaluating employee retention dynamics across **1,470 enterprise employees** using the canonical **IBM HR Analytics dataset**.
@@ -140,7 +141,7 @@ We segmented the workforce across two orthogonal dimensions: **OverTime Status**
 
 $$\text{Cohort Attrition Rate} = \frac{\text{Departed Employees in Cohort}}{\text{Total Employees in Cohort}}$$
 
-$$\text{Cohort Relative Risk Multiplier} = \frac{\text{Rate}_{\text{OverTime \& Low Income}}}{\text{Rate}_{\text{Peer Baseline}}} = \frac{43.07\%}{12.67\%} = \mathbf{3.40\times}$$
+$$\text{Cohort Relative Risk Multiplier} = \frac{\text{Rate}_{\text{OverTime and Low Income}}}{\text{Rate}_{\text{Peer Baseline}}} = \frac{43.07\%}{12.67\%} = \mathbf{3.40\times}$$
 
 * **Chi-Square Test of Independence**: $\chi^2 = 126.8, \text{df} = 1, p = 2.4 \times 10^{-29}$ (statistically indisputable).
 * **Mann-Whitney U Test on Monthly Income**: $U = 106,493.5, p = 1.2 \times 10^{-10}$ (churning employees earn significantly lower wages).
@@ -224,18 +225,27 @@ _SavedHeadcount * _AvgReplacementCost
 
 ---
 
-## 🖼️ Publication Figures & Dashboard Previews
+## 🖼️ Publication Figures & Analytical Visualizations
 
 All figures are automatically generated in publication quality (300 DPI) inside `outputs/figures/`:
 
-| Figure Preview | Description |
-| :--- | :--- |
-| **`01_attrition_by_department.png`** | Empirical department attrition rates vs 16.1% company benchmark line |
-| **`02_overtime_income_cohort_risk.png`** | The 3.4× attrition risk explosion comparing the 4 employee quadrants |
-| **`03_logistic_regression_roc_pr_curve.png`** | ROC curve (AUC 0.84) and PR curve validating 86% holdout accuracy |
-| **`04_feature_odds_ratios.png`** | Forest plot of Odds Ratios ($e^{\beta}$) for top catalysts and retention anchors |
-| **`05_department_risk_heatmap.png`** | Flight risk heatmap cross-tabulating job roles across departments |
-| **`06_attrition_confusion_matrix.png`** | Annotated Confusion Matrix (TN=235, FP=12, FN=29, TP=18) |
+### 1. The 3.4× Attrition Multiplier & Department Benchmark
+| Empirical Department Attrition vs. Benchmark | 4-Quadrant Overtime & Income Risk Explosion |
+| :---: | :---: |
+| <img src="outputs/figures/01_attrition_by_department.png" alt="Department Attrition Benchmark" width="460" /> | <img src="outputs/figures/02_overtime_income_cohort_risk.png" alt="3.4x Overtime Income Cohort Risk" width="460" /> |
+| *Sales & Lab Techs exceed company baseline* | *Proving the 3.40× empirical risk multiplier* |
+
+### 2. Machine Learning Diagnostics (86% Holdout Accuracy)
+| ROC & Precision-Recall Curves (AUC = 0.84) | Confusion Matrix (TN=235, FP=12, FN=29, TP=18) |
+| :---: | :---: |
+| <img src="outputs/figures/03_logistic_regression_roc_pr_curve.png" alt="ROC and PR Curves" width="460" /> | <img src="outputs/figures/06_attrition_confusion_matrix.png" alt="Model Confusion Matrix" width="460" /> |
+| *High discriminative power separating flight risks* | *95.1% specificity ensuring minimal false alarms* |
+
+### 3. Econometric Odds Ratios & Department Heatmap
+| Feature Odds Ratios (Catalysts vs. Anchors) | Department & Role Risk Heatmap |
+| :---: | :---: |
+| <img src="outputs/figures/04_feature_odds_ratios.png" alt="Feature Odds Ratios" width="460" /> | <img src="outputs/figures/05_department_risk_heatmap.png" alt="Department Risk Heatmap" width="460" /> |
+| *Overtime multiplies departure odds by 4.14×* | *Cross-tabulation showing high-risk exposure* |
 
 ---
 
@@ -308,22 +318,26 @@ When discussing this project in data analyst and data science interviews, use th
 
 ### 1. Clone & Install Dependencies
 ```bash
-git clone https://github.com/ankurpal/hr-attrition-risk-dashboard.git
+git clone https://github.com/Ank-Pal/hr-attrition-risk-dashboard.git
 cd hr-attrition-risk-dashboard
 pip install -r requirements.txt
 ```
 
 ### 2. Run the End-to-End Analytics Pipeline
-Execute the master orchestrator to download the canonical dataset, build the SQLite Star Schema, run statistical tests, train the model, and generate all figures in ~7 seconds:
+Execute the master orchestrator to build the SQLite Star Schema, run econometric hypothesis tests, train the machine learning model, and generate all 300 DPI figures in ~7 seconds:
 ```bash
 py src/run_pipeline.py
 ```
 
-### 3. Launch the Interactive Dashboard Preview
-```bash
-py app.py
-```
-Open your browser to `http://localhost:8050` or view `outputs/dashboard_preview.html` directly in any web browser.
+### 3. Interactive Executive Dashboard
+You have three easy ways to interact with the executive dashboard:
+* **Option 1 (Online Live Demo)**: Click the **[Live Interactive Dashboard](https://ank-pal.github.io/hr-attrition-risk-dashboard/)** badge to view it directly in your browser without installing anything.
+* **Option 2 (Offline Standalone)**: Simply double-click [`outputs/dashboard_preview.html`](outputs/dashboard_preview.html) on your computer to open the interactive dashboard in any browser.
+* **Option 3 (Local Developer Server)**: If you are running locally from the terminal:
+  ```bash
+  py app.py
+  ```
+  Then open your local browser to `http://localhost:8050`.
 
 ### 4. Open in Power BI Desktop
 1. Open **Power BI Desktop**.

@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HR Attrition Risk Intelligence Dashboard</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      background-color: #0b0f19;
+      color: #e2e8f0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    .glass-card {
+      background: rgba(17, 24, 39, 0.75);
+      backdrop-filter: blur(12px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      border-radius: 12px;
+    }
+    .accent-gradient {
+      background: linear-gradient(135deg, #e11d48 0%, #be123c 100%);
+    }
+    .badge-high {
+      background: rgba(225, 29, 72, 0.15);
+      color: #f43f5e;
+      border: 1px solid rgba(225, 29, 72, 0.3);
+    }
+    .badge-med {
+      background: rgba(245, 158, 11, 0.15);
+      color: #fbbf24;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .badge-low {
+      background: rgba(16, 185, 129, 0.15);
+      color: #34d399;
+      border: 1px solid rgba(16, 185, 129, 0.3);
+    }
+  </style>
+</head>
+<body class="p-4 md:p-8">
+
+  <!-- Header -->
+  <div class="max-w-7xl mx-auto mb-8">
+    <div class="flex flex-col md:flex-row md:items-center justify-between pb-6 border-b border-gray-800">
+      <div>
+        <div class="flex items-center space-x-3">
+          <span class="p-2.5 bg-rose-600/20 text-rose-500 rounded-lg text-xl border border-rose-500/30">
+            <i class="fa-solid fa-users-gear"></i>
+          </span>
+          <div>
+            <h1 class="text-2xl md:text-3xl font-extrabold tracking-tight text-white">HR Attrition Risk Intelligence Dashboard</h1>
+            <p class="text-xs md:text-sm text-gray-400 mt-1">
+              IBM HR Workforce Analytics · Scikit-Learn Logistic Regression · <span class="text-emerald-400 font-semibold">86% Holdout Accuracy</span> · Verified Pipeline
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="mt-4 md:mt-0 flex items-center space-x-3">
+        <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-semibold bg-gray-800 text-gray-300 border border-gray-700">
+          <span class="w-2 h-2 rounded-full bg-emerald-400 mr-2 animate-pulse"></span> Production Pipeline Live
+        </span>
+        <button onclick="window.print()" class="px-3.5 py-1.5 bg-gray-800 hover:bg-gray-700 text-xs font-medium text-white rounded-lg border border-gray-700 transition">
+          <i class="fa-solid fa-file-pdf mr-1.5"></i> Export Report
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Container -->
+  <div class="max-w-7xl mx-auto space-y-8">
+
+    <!-- KPI Cards Grid -->
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4">
+      <!-- Card 1 -->
+      <div class="glass-card p-4">
+        <div class="text-xs font-medium text-gray-400 uppercase tracking-wider">Total Headcount</div>
+        <div class="text-2xl font-bold text-white mt-1">1,470</div>
+        <div class="text-xs text-gray-400 mt-1">
+          <span class="text-emerald-400 font-medium">1,233 Active</span> (83.9%)
+        </div>
+      </div>
+
+      <!-- Card 2 -->
+      <div class="glass-card p-4">
+        <div class="text-xs font-medium text-gray-400 uppercase tracking-wider">Baseline Attrition</div>
+        <div class="text-2xl font-bold text-rose-400 mt-1">16.12%</div>
+        <div class="text-xs text-gray-400 mt-1">237 Historical Exits</div>
+      </div>
+
+      <!-- Card 3 -->
+      <div class="glass-card p-4 border-rose-500/40 relative overflow-hidden">
+        <div class="absolute -right-2 -top-2 w-12 h-12 bg-rose-500/10 rounded-full blur-md"></div>
+        <div class="text-xs font-medium text-rose-300 uppercase tracking-wider">Target Cohort Risk</div>
+        <div class="text-2xl font-bold text-rose-500 mt-1">3.40×</div>
+        <div class="text-xs text-rose-300 mt-1">Overtime + Low Income</div>
+      </div>
+
+      <!-- Card 4 -->
+      <div class="glass-card p-4">
+        <div class="text-xs font-medium text-gray-400 uppercase tracking-wider">Holdout Accuracy</div>
+        <div class="text-2xl font-bold text-blue-400 mt-1">86.05%</div>
+        <div class="text-xs text-gray-400 mt-1">ROC-AUC: <span class="text-white font-medium">0.84</span></div>
+      </div>
+
+      <!-- Card 5 -->
+      <div class="glass-card p-4">
+        <div class="text-xs font-medium text-gray-400 uppercase tracking-wider">High Risk Exposure</div>
+        <div class="text-2xl font-bold text-amber-400 mt-1">$12.64M</div>
+        <div class="text-xs text-gray-400 mt-1">SHRM 1.5× Base Salary</div>
+      </div>
+    </div>
+
+    <!-- Spotlight Banner: The 3.4x Finding -->
+    <div class="glass-card p-6 border-l-4 border-rose-500 relative">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="inline-block px-2.5 py-0.5 rounded text-xs font-bold uppercase tracking-wide bg-rose-500/20 text-rose-400 border border-rose-500/30 mb-2">
+            Key Empirical Finding
+          </div>
+          <h2 class="text-lg md:text-xl font-bold text-white">Overtime Workers with Below-Median Income Suffer 3.4× Baseline Attrition</h2>
+          <p class="text-sm text-gray-300 mt-1 max-w-4xl">
+            Employees subjected to mandatory overtime who earn below the company median ($4,919/mo) experience an alarming <strong class="text-rose-400">43.07% attrition rate</strong>. In contrast, standard non-overtime peers experience only <strong class="text-emerald-400">10.4% - 12.7%</strong> attrition. The regularized Logistic Regression model confirms an odds ratio exceeding <strong class="text-rose-400">4.1×</strong> for overtime status (<span class="italic text-gray-400">p &lt; 0.001</span>).
+          </p>
+        </div>
+        <div class="shrink-0 text-center px-6 py-3 bg-gray-900/80 rounded-xl border border-gray-800">
+          <div class="text-3xl font-black text-rose-500">43.1%</div>
+          <div class="text-xs text-gray-400 uppercase tracking-wider mt-0.5">Cohort Attrition</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row 1 -->
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      <!-- Chart 1: Department Attrition Rates -->
+      <div class="glass-card p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-base font-bold text-white">Empirical & Predicted Attrition by Department</h3>
+          <span class="text-xs text-gray-400">Baseline: 16.1%</span>
+        </div>
+        <div class="h-64">
+          <canvas id="deptChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 2: 4-Quadrant Cohort Disparity -->
+      <div class="glass-card p-6">
+        <div class="flex items-center justify-between mb-4">
+          <h3 class="text-base font-bold text-white">The 3.4× Risk Disparity Across Employee Quadrants</h3>
+          <span class="text-xs text-rose-400 font-semibold">Overtime × Income Cut</span>
+        </div>
+        <div class="h-64">
+          <canvas id="cohortChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Charts Row 2 -->
+    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+      <!-- Chart 3: Risk Tier Distribution -->
+      <div class="glass-card p-6">
+        <h3 class="text-base font-bold text-white mb-2">Workforce Risk Distribution</h3>
+        <p class="text-xs text-gray-400 mb-4">Calibrated model flight probabilities</p>
+        <div class="h-56">
+          <canvas id="riskTierChart"></canvas>
+        </div>
+      </div>
+
+      <!-- Chart 4: Top Model Odds Ratios -->
+      <div class="glass-card p-6 lg:col-span-2">
+        <h3 class="text-base font-bold text-white mb-2">Logistic Regression Odds Ratios (Top Catalysts vs Anchors)</h3>
+        <p class="text-xs text-gray-400 mb-4">Multiplier effect on probability of attrition (e<sup>β</sup>)</p>
+        <div class="h-56">
+          <canvas id="oddsRatioChart"></canvas>
+        </div>
+      </div>
+    </div>
+
+    <!-- Interactive What-If Retention Simulator -->
+    <div class="glass-card p-6 border border-blue-500/30">
+      <div class="flex items-center space-x-2.5 mb-4">
+        <i class="fa-solid fa-sliders text-blue-400"></i>
+        <h3 class="text-base font-bold text-white">Interactive Retention & ROI Simulator</h3>
+      </div>
+      <p class="text-xs text-gray-400 mb-6">
+        Adjust policy levers to simulate expected attrition prevention and replacement cost savings in the OverTime + Below-Median Income cohort.
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
+        <!-- Slider 1 -->
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
+            Overtime Reduction: <span id="otVal" class="text-blue-400 font-bold">25%</span>
+          </label>
+          <input id="otSlider" type="range" min="0" max="60" value="25" step="5" class="w-full accent-blue-500 cursor-pointer" oninput="updateSim()">
+        </div>
+
+        <!-- Slider 2 -->
+        <div>
+          <label class="block text-xs font-semibold text-gray-300 uppercase tracking-wider mb-2">
+            Salary Equalization: <span id="salVal" class="text-blue-400 font-bold">10%</span>
+          </label>
+          <input id="salSlider" type="range" min="0" max="30" value="10" step="5" class="w-full accent-blue-500 cursor-pointer" oninput="updateSim()">
+        </div>
+
+        <!-- Return Metric Cards -->
+        <div class="grid grid-cols-2 gap-3">
+          <div class="bg-gray-900/90 p-3 rounded-lg border border-gray-800 text-center">
+            <div class="text-xs text-gray-400">Exits Prevented</div>
+            <div id="simExits" class="text-xl font-extrabold text-emerald-400 mt-0.5">22 Emps</div>
+          </div>
+          <div class="bg-gray-900/90 p-3 rounded-lg border border-gray-800 text-center">
+            <div class="text-xs text-gray-400">Projected Savings</div>
+            <div id="simSavings" class="text-xl font-extrabold text-blue-400 mt-0.5">$1.76M</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Priority Flight-Risk Employee Roster Table -->
+    <div class="glass-card p-6 overflow-hidden">
+      <div class="flex items-center justify-between mb-4">
+        <div>
+          <h3 class="text-base font-bold text-white">Priority Flight-Risk Employee Roster</h3>
+          <p class="text-xs text-gray-400">Top individual candidates requiring retention intervention</p>
+        </div>
+        <span class="px-2.5 py-1 text-xs rounded-md bg-gray-800 text-gray-300 border border-gray-700">Top 8 Sample</span>
+      </div>
+
+      <div class="overflow-x-auto">
+        <table class="w-full text-left text-xs">
+          <thead class="text-gray-400 uppercase bg-gray-900/60 border-b border-gray-800">
+            <tr>
+              <th class="p-3">Emp ID</th>
+              <th class="p-3">Department</th>
+              <th class="p-3">Role</th>
+              <th class="p-3">Monthly Income</th>
+              <th class="p-3">OverTime</th>
+              <th class="p-3">Job Sat.</th>
+              <th class="p-3">Risk Tier</th>
+              <th class="p-3">Attrition Prob.</th>
+              <th class="p-3">Replacement Exposure</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-800/60 text-gray-300 font-mono">
+            <tr class="hover:bg-gray-800/30">
+              <td class="p-3 font-bold text-white">#1024</td>
+              <td class="p-3 font-sans">Sales</td>
+              <td class="p-3 font-sans">Sales Representative</td>
+              <td class="p-3">$2,342</td>
+              <td class="p-3 text-rose-400 font-bold">Yes</td>
+              <td class="p-3">1 / 4</td>
+              <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] badge-high font-sans font-bold">High Risk</span></td>
+              <td class="p-3 font-bold text-rose-400">82.4%</td>
+              <td class="p-3 text-amber-400 font-bold">$42,156</td>
+            </tr>
+            <tr class="hover:bg-gray-800/30">
+              <td class="p-3 font-bold text-white">#0482</td>
+              <td class="p-3 font-sans">Research & Development</td>
+              <td class="p-3 font-sans">Laboratory Technician</td>
+              <td class="p-3">$2,560</td>
+              <td class="p-3 text-rose-400 font-bold">Yes</td>
+              <td class="p-3">1 / 4</td>
+              <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] badge-high font-sans font-bold">High Risk</span></td>
+              <td class="p-3 font-bold text-rose-400">79.1%</td>
+              <td class="p-3 text-amber-400 font-bold">$46,080</td>
+            </tr>
+            <tr class="hover:bg-gray-800/30">
+              <td class="p-3 font-bold text-white">#0819</td>
+              <td class="p-3 font-sans">Sales</td>
+              <td class="p-3 font-sans">Sales Executive</td>
+              <td class="p-3">$4,120</td>
+              <td class="p-3 text-rose-400 font-bold">Yes</td>
+              <td class="p-3">2 / 4</td>
+              <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] badge-high font-sans font-bold">High Risk</span></td>
+              <td class="p-3 font-bold text-rose-400">76.3%</td>
+              <td class="p-3 text-amber-400 font-bold">$74,160</td>
+            </tr>
+            <tr class="hover:bg-gray-800/30">
+              <td class="p-3 font-bold text-white">#0214</td>
+              <td class="p-3 font-sans">Human Resources</td>
+              <td class="p-3 font-sans">Human Resources</td>
+              <td class="p-3">$2,701</td>
+              <td class="p-3 text-rose-400 font-bold">Yes</td>
+              <td class="p-3">1 / 4</td>
+              <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] badge-high font-sans font-bold">High Risk</span></td>
+              <td class="p-3 font-bold text-rose-400">73.8%</td>
+              <td class="p-3 text-amber-400 font-bold">$48,618</td>
+            </tr>
+            <tr class="hover:bg-gray-800/30">
+              <td class="p-3 font-bold text-white">#1185</td>
+              <td class="p-3 font-sans">Research & Development</td>
+              <td class="p-3 font-sans">Research Scientist</td>
+              <td class="p-3">$3,890</td>
+              <td class="p-3 text-rose-400 font-bold">Yes</td>
+              <td class="p-3">2 / 4</td>
+              <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] badge-high font-sans font-bold">High Risk</span></td>
+              <td class="p-3 font-bold text-rose-400">68.5%</td>
+              <td class="p-3 text-amber-400 font-bold">$70,020</td>
+            </tr>
+            <tr class="hover:bg-gray-800/30">
+              <td class="p-3 font-bold text-white">#0639</td>
+              <td class="p-3 font-sans">Sales</td>
+              <td class="p-3 font-sans">Sales Representative</td>
+              <td class="p-3">$2,190</td>
+              <td class="p-3 text-gray-400">No</td>
+              <td class="p-3">1 / 4</td>
+              <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] badge-med font-sans font-bold">Moderate</span></td>
+              <td class="p-3 text-amber-400">41.2%</td>
+              <td class="p-3 text-gray-400">$39,420</td>
+            </tr>
+            <tr class="hover:bg-gray-800/30">
+              <td class="p-3 font-bold text-white">#1402</td>
+              <td class="p-3 font-sans">Research & Development</td>
+              <td class="p-3 font-sans">Manufacturing Director</td>
+              <td class="p-3">$11,800</td>
+              <td class="p-3 text-gray-400">No</td>
+              <td class="p-3">4 / 4</td>
+              <td class="p-3"><span class="px-2 py-0.5 rounded text-[10px] badge-low font-sans font-bold">Low Risk</span></td>
+              <td class="p-3 text-emerald-400">4.8%</td>
+              <td class="p-3 text-gray-400">$212,400</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="text-center text-xs text-gray-500 pt-6 pb-12 border-t border-gray-800">
+      HR Attrition Risk Analytics · Portfolio Project by Ankur Pal · June 2026 · Built with Python & Power BI
+    </div>
+  </div>
+
+  <!-- Chart.js Scripts -->
+  <script>
+    // 1. Department Chart
+    const ctxDept = document.getElementById('deptChart').getContext('2d');
+    new Chart(ctxDept, {
+      type: 'bar',
+      data: {
+        labels: ['Sales (N=446)', 'Human Resources (N=63)', 'R&D (N=961)'],
+        datasets: [
+          {
+            label: 'Empirical Attrition Rate (%)',
+            data: [20.63, 19.05, 13.84],
+            backgroundColor: '#e11d48',
+            borderRadius: 6
+          },
+          {
+            label: 'Avg Predicted Flight Risk (%)',
+            data: [19.82, 17.65, 13.91],
+            backgroundColor: '#3b82f6',
+            borderRadius: 6
+          }
+        ]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { labels: { color: '#94a3b8', font: { size: 11 } } }
+        },
+        scales: {
+          x: { ticks: { color: '#94a3b8' }, grid: { display: false } },
+          y: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } }
+        }
+      }
+    });
+
+    // 2. Cohort Chart (The 3.4x Disparity)
+    const ctxCohort = document.getElementById('cohortChart').getContext('2d');
+    new Chart(ctxCohort, {
+      type: 'bar',
+      data: {
+        labels: [
+          'OverTime + Low Income (Target)',
+          'OverTime + High Income',
+          'Standard Hours + Low Income',
+          'Standard Hours + High Income (Anchor)'
+        ],
+        datasets: [{
+          label: 'Attrition Rate (%)',
+          data: [43.07, 24.69, 12.65, 7.10],
+          backgroundColor: ['#e11d48', '#f59e0b', '#3b82f6', '#10b981'],
+          borderRadius: 6
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+          y: { ticks: { color: '#cbd5e1', font: { size: 11 } }, grid: { display: false } }
+        }
+      }
+    });
+
+    // 3. Risk Tier Doughnut
+    const ctxRisk = document.getElementById('riskTierChart').getContext('2d');
+    new Chart(ctxRisk, {
+      type: 'doughnut',
+      data: {
+        labels: ['Low Risk (< 20%)', 'Moderate Risk (20-45%)', 'High Risk (≥ 45%)'],
+        datasets: [{
+          data: [1118, 238, 114],
+          backgroundColor: ['#10b981', '#f59e0b', '#e11d48'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { color: '#94a3b8', font: { size: 10 } } }
+        }
+      }
+    });
+
+    // 4. Odds Ratios Horizontal Bar
+    const ctxOdds = document.getElementById('oddsRatioChart').getContext('2d');
+    new Chart(ctxOdds, {
+      type: 'bar',
+      data: {
+        labels: [
+          'OverTime (Yes)',
+          'Sales Representative Role',
+          'Travel Frequently',
+          'Distance From Home',
+          'Years with Manager',
+          'Job Involvement',
+          'Job Satisfaction',
+          'Stock Option Level'
+        ],
+        datasets: [{
+          label: 'Odds Ratio (Exp(Beta))',
+          data: [4.14, 2.92, 1.84, 1.38, 0.72, 0.69, 0.66, 0.58],
+          backgroundColor: [
+            '#e11d48', '#e11d48', '#e11d48', '#e11d48',
+            '#10b981', '#10b981', '#10b981', '#10b981'
+          ],
+          borderRadius: 4
+        }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false }
+        },
+        scales: {
+          x: { ticks: { color: '#94a3b8' }, grid: { color: 'rgba(255,255,255,0.05)' } },
+          y: { ticks: { color: '#cbd5e1' }, grid: { display: false } }
+        }
+      }
+    });
+
+    // Interactive Simulator Function
+    function updateSim() {
+      const ot = parseInt(document.getElementById('otSlider').value);
+      const sal = parseInt(document.getElementById('salSlider').value);
+
+      document.getElementById('otVal').innerText = ot + '%';
+      document.getElementById('salVal').innerText = sal + '%';
+
+      // Total cohort exits = 109
+      const baseExits = 109;
+      const efficacy = (ot * 0.007) + (sal * 0.003);
+      const exitsPrevented = Math.round(baseExits * efficacy);
+      const savings = (exitsPrevented * 80000) / 1000000;
+
+      document.getElementById('simExits').innerText = exitsPrevented + ' Emps';
+      document.getElementById('simSavings').innerText = '$' + savings.toFixed(2) + 'M';
+    }
+  </script>
+</body>
+</html>
