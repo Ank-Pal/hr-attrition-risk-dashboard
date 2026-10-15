@@ -1,0 +1,90 @@
+{
+    "sample_overview": {
+        "total_employees": 1470,
+        "total_attrition_count": 237,
+        "overall_attrition_rate_pct": 16.12,
+        "median_monthly_income_usd": 4919.0
+    },
+    "cohort_analysis": {
+        "overtime_below_median": {
+            "name": "OverTime & Below-Median Income (Target High-Risk Cohort)",
+            "headcount": 202,
+            "attrition_count": 87,
+            "attrition_rate_pct": 43.07,
+            "multiplier_vs_peer_baseline": 3.4,
+            "multiplier_vs_company_avg": 2.67,
+            "multiplier_vs_no_overtime": 4.13,
+            "multiplier_vs_standard_anchor": 6.06
+        },
+        "overtime_above_median": {
+            "name": "OverTime & Above-Median Income",
+            "headcount": 214,
+            "attrition_count": 40,
+            "attrition_rate_pct": 18.69
+        },
+        "no_overtime_below_median": {
+            "name": "Standard Hours & Below-Median Income",
+            "headcount": 533,
+            "attrition_count": 73,
+            "attrition_rate_pct": 13.7
+        },
+        "no_overtime_above_median": {
+            "name": "Standard Hours & Above-Median Income (Anchor)",
+            "headcount": 521,
+            "attrition_count": 37,
+            "attrition_rate_pct": 7.1
+        },
+        "no_overtime_overall": {
+            "name": "All Non-OverTime Workers",
+            "headcount": 1054,
+            "attrition_count": 110,
+            "attrition_rate_pct": 10.44
+        }
+    },
+    "hypothesis_tests": {
+        "chi_square_overtime": {
+            "chi2_statistic": 87.5643,
+            "p_value": 8.15842372153832e-21,
+            "statistically_significant": true,
+            "interpretation": "Overtime status is strongly associated with employee attrition (p < 0.001)."
+        },
+        "chi_square_target_cohort": {
+            "chi2_statistic": 123.445,
+            "p_value": 1.1143229930674211e-28,
+            "statistically_significant": true,
+            "interpretation": "Employees in OverTime + Below-Median Income cohort show massive statistical divergence in attrition (p < 0.001)."
+        },
+        "mann_whitney_monthly_income": {
+            "u_statistic": 100620.5,
+            "p_value": 2.950830917288873e-14,
+            "statistically_significant": true,
+            "interpretation": "Departing employees have statistically significantly lower compensation than retained peers (p < 0.001)."
+        }
+    },
+    "department_summary": {
+        "Human Resources": {
+            "headcount": 63,
+            "attrition_count": 12,
+            "attrition_rate_pct": 19.05,
+            "overtime_pct": 26.98,
+            "below_median_income_pct": 55.56,
+            "avg_monthly_income_usd": 6654.51
+        },
+        "Research & Development": {
+            "headcount": 961,
+            "attrition_count": 133,
+            "attrition_rate_pct": 13.84,
+            "overtime_pct": 28.2,
+            "below_median_income_pct": 56.82,
+            "avg_monthly_income_usd": 6281.25
+        },
+        "Sales": {
+            "headcount": 446,
+            "attrition_count": 92,
+            "attrition_rate_pct": 20.63,
+            "overtime_pct": 28.7,
+            "below_median_income_pct": 34.53,
+            "avg_monthly_income_usd": 6959.17
+        }
+    }
+}

@@ -1,0 +1,132 @@
+{
+    "model_architecture": "Logistic Regression with L2 Regularization & Standardized Scaling",
+    "dataset_size": 1470,
+    "train_set_size": 1176,
+    "test_holdout_size": 294,
+    "holdout_accuracy_pct": 86.05,
+    "roc_auc_score": 0.793,
+    "pr_auc_score": 0.5661,
+    "precision_score": 0.6,
+    "recall_score": 0.383,
+    "f1_score": 0.4675,
+    "brier_score_loss": 0.1044,
+    "confusion_matrix": {
+        "true_negatives": 235,
+        "false_positives": 12,
+        "false_negatives": 29,
+        "true_positives": 18,
+        "specificity_pct": 95.14,
+        "sensitivity_pct": 38.3
+    },
+    "top_positive_attrition_drivers": [
+        {
+            "Feature": "OverTime_Yes",
+            "Coefficient": 2.099051440413724,
+            "Odds_Ratio": 8.158427486470703
+        },
+        {
+            "Feature": "BusinessTravel_Travel_Frequently",
+            "Coefficient": 1.6590149933655245,
+            "Odds_Ratio": 5.254132938926645
+        },
+        {
+            "Feature": "JobRole_Laboratory Technician",
+            "Coefficient": 1.1776746240951965,
+            "Odds_Ratio": 3.2468153515246003
+        },
+        {
+            "Feature": "MaritalStatus_Single",
+            "Coefficient": 0.9875481354362167,
+            "Odds_Ratio": 2.6846440126725692
+        },
+        {
+            "Feature": "YearsSinceLastPromotion",
+            "Coefficient": 0.7648715640740633,
+            "Odds_Ratio": 2.1487183842967967
+        },
+        {
+            "Feature": "BusinessTravel_Travel_Rarely",
+            "Coefficient": 0.6803893563095057,
+            "Odds_Ratio": 1.9746464236173942
+        },
+        {
+            "Feature": "JobRole_Sales Representative",
+            "Coefficient": 0.6194706301665616,
+            "Odds_Ratio": 1.8579442418384533
+        },
+        {
+            "Feature": "EducationField_Technical Degree",
+            "Coefficient": 0.5766564741553456,
+            "Odds_Ratio": 1.7800767371894588
+        }
+    ],
+    "top_retention_anchors": [
+        {
+            "Feature": "EducationField_Other",
+            "Coefficient": -0.523993954884458,
+            "Odds_Ratio": 0.592150795216637
+        },
+        {
+            "Feature": "JobSatisfaction",
+            "Coefficient": -0.5173105425266196,
+            "Odds_Ratio": 0.5961216377673904
+        },
+        {
+            "Feature": "Department_Research & Development",
+            "Coefficient": -0.47101035181964623,
+            "Odds_Ratio": 0.6243711150007825
+        },
+        {
+            "Feature": "EducationField_Medical",
+            "Coefficient": -0.4670985954239242,
+            "Odds_Ratio": 0.6268182859509818
+        },
+        {
+            "Feature": "EnvironmentSatisfaction",
+            "Coefficient": -0.45889063219983517,
+            "Odds_Ratio": 0.6319843598591278
+        },
+        {
+            "Feature": "YearsInCurrentRole",
+            "Coefficient": -0.41697802209450896,
+            "Odds_Ratio": 0.6590354040027798
+        },
+        {
+            "Feature": "Age",
+            "Coefficient": -0.40988105674584113,
+            "Odds_Ratio": 0.6637291915513752
+        },
+        {
+            "Feature": "YearsWithCurrManager",
+            "Coefficient": -0.3932200226044376,
+            "Odds_Ratio": 0.6748802423408735
+        }
+    ],
+    "full_classification_report": {
+        "0": {
+            "precision": 0.8901515151515151,
+            "recall": 0.951417004048583,
+            "f1-score": 0.9197651663405088,
+            "support": 247.0
+        },
+        "1": {
+            "precision": 0.6,
+            "recall": 0.3829787234042553,
+            "f1-score": 0.4675324675324675,
+            "support": 47.0
+        },
+        "accuracy": 0.8605442176870748,
+        "macro avg": {
+            "precision": 0.7450757575757576,
+            "recall": 0.6671978637264191,
+            "f1-score": 0.6936488169364882,
+            "support": 294.0
+        },
+        "weighted avg": {
+            "precision": 0.8437667491238919,
+            "recall": 0.8605442176870748,
+            "f1-score": 0.8474694627895635,
+            "support": 294.0
+        }
+    }
+}

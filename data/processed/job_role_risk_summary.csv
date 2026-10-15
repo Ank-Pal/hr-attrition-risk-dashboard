@@ -1,0 +1,12 @@
+Department,JobRole,Headcount,Attrition_Count,Attrition_Rate_Pct,Avg_Predicted_Risk_Pct,High_Risk_Count,Financial_Exposure_USD
+Sales,Sales Representative,83,33,39.76,35.44,25,1067382.0
+Research & Development,Laboratory Technician,259,62,23.94,24.76,53,3054906.0
+Human Resources,Human Resources,52,12,23.08,20.92,7,520848.0
+Sales,Sales Executive,326,57,17.48,18.61,44,5556744.0
+Research & Development,Research Scientist,292,47,16.1,15.82,29,1360530.0
+Research & Development,Manufacturing Director,145,10,6.9,6.62,4,475254.0
+Research & Development,Healthcare Representative,131,9,6.87,8.77,3,341406.0
+Research & Development,Manager,54,3,5.56,3.69,0,0.0
+Sales,Manager,37,2,5.41,5.56,0,0.0
+Research & Development,Research Director,80,2,2.5,4.3,1,259398.0
+Human Resources,Manager,11,0,0.0,3.29,0,0.0

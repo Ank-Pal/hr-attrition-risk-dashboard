@@ -1,0 +1,224 @@
+// ==============================================================================
+// HR ATTRITION RISK ANALYTICS - PRODUCTION DAX MEASURES SUITE
+// Tool: Power BI Desktop / Analysis Services
+// Target Fact Table: 'fact_employees'
+// Best Practice: Organized into dedicated display folders
+// ==============================================================================
+
+// ------------------------------------------------------------------------------
+// FOLDER 1: CORE HEADCOUNT & ATTRITION METRICS
+// ------------------------------------------------------------------------------
+
+Total Headcount = 
+COUNTROWS('fact_employees')
+
+Active Headcount = 
+CALCULATE(
+    COUNTROWS('fact_employees'),
+    'fact_employees'[attrition] = "No"
+)
+
+Attrition Headcount = 
+CALCULATE(
+    COUNTROWS('fact_employees'),
+    'fact_employees'[attrition] = "Yes"
+)
+
+Attrition Rate % = 
+DIVIDE(
+    [Attrition Headcount],
+    [Total Headcount],
+    0
+)
+
+Company Baseline Attrition Rate % = 
+CALCULATE(
+    [Attrition Rate %],
+    ALL('fact_employees')
+)
+
+Attrition Rate Variance vs Benchmark % = 
+[Attrition Rate %] - [Company Baseline Attrition Rate %]
+
+Avg Monthly Compensation = 
+AVERAGE('fact_employees'[monthly_income])
+
+Avg Employee Tenure Years = 
+AVERAGE('fact_employees'[years_at_company])
+
+
+// ------------------------------------------------------------------------------
+// FOLDER 2: MACHINE LEARNING & FLIGHT RISK PREDICTIVE METRICS
+// ------------------------------------------------------------------------------
+
+Avg Attrition Probability % = 
+AVERAGE('fact_employees'[attrition_probability])
+
+High Risk Headcount = 
+CALCULATE(
+    COUNTROWS('fact_employees'),
+    'fact_employees'[predicted_risk_tier] = "High Risk"
+)
+
+High Risk Proportion % = 
+DIVIDE(
+    [High Risk Headcount],
+    [Total Headcount],
+    0
+)
+
+Moderate Risk Headcount = 
+CALCULATE(
+    COUNTROWS('fact_employees'),
+    'fact_employees'[predicted_risk_tier] = "Moderate Risk"
+)
+
+Low Risk Headcount = 
+CALCULATE(
+    COUNTROWS('fact_employees'),
+    'fact_employees'[predicted_risk_tier] = "Low Risk"
+)
+
+Avg Flight Risk Score = 
+AVERAGE('fact_employees'[flight_risk_score])
+
+Department Risk Score = 
+// Composite index: blends empirical attrition rate (40%) and predicted model risk (60%)
+VAR _EmpiricalComponent = [Attrition Rate %] * 100 * 0.40
+VAR _PredictiveComponent = [Avg Attrition Probability %] * 100 * 0.60
+RETURN
+ROUND(_EmpiricalComponent + _PredictiveComponent, 1)
+
+
+// ------------------------------------------------------------------------------
+// FOLDER 3: THE 3.4X OVERTIME & COMPENSATION COHORT METRICS
+// ------------------------------------------------------------------------------
+
+OverTime Headcount = 
+CALCULATE(
+    COUNTROWS('fact_employees'),
+    'fact_employees'[overtime] = "Yes"
+)
+
+OverTime Saturation % = 
+DIVIDE(
+    [OverTime Headcount],
+    [Total Headcount],
+    0
+)
+
+Below Median Income Headcount = 
+CALCULATE(
+    COUNTROWS('fact_employees'),
+    'fact_employees'[below_median_income_flag] = 1
+)
+
+Below Median Income Proportion % = 
+DIVIDE(
+    [Below Median Income Headcount],
+    [Total Headcount],
+    0
+)
+
+OT & Low Income Cohort Headcount = 
+CALCULATE(
+    COUNTROWS('fact_employees'),
+    'fact_employees'[overtime_low_income_cohort] = 1
+)
+
+OT & Low Income Attrition Count = 
+CALCULATE(
+    COUNTROWS('fact_employees'),
+    'fact_employees'[overtime_low_income_cohort] = 1,
+    'fact_employees'[attrition] = "Yes"
+)
+
+OT & Low Income Attrition Rate % = 
+DIVIDE(
+    [OT & Low Income Attrition Count],
+    [OT & Low Income Cohort Headcount],
+    0
+)
+
+Standard Peer Baseline Attrition Rate % = 
+// Baseline attrition rate for standard non-overtime peer benchmark cohort
+CALCULATE(
+    DIVIDE(
+        CALCULATE(COUNTROWS('fact_employees'), 'fact_employees'[attrition] = "Yes"),
+        COUNTROWS('fact_employees'),
+        0
+    ),
+    'fact_employees'[overtime] = "No"
+)
+
+Cohort Risk Multiplier = 
+// Dynamically surfaces the documented 3.4x / 4.1x risk disparity
+DIVIDE(
+    [OT & Low Income Attrition Rate %],
+    [Standard Peer Baseline Attrition Rate %],
+    0
+)
+
+Relative Risk vs Company Baseline = 
+DIVIDE(
+    [OT & Low Income Attrition Rate %],
+    [Company Baseline Attrition Rate %],
+    0
+)
+
+
+// ------------------------------------------------------------------------------
+// FOLDER 4: FINANCIAL TURNOVER EXPOSURE & REPLACEMENT COST ($)
+// ------------------------------------------------------------------------------
+
+Total Replacement Cost Exposure $ = 
+SUM('fact_employees'[estimated_replacement_cost])
+
+High Risk Replacement Exposure $ = 
+CALCULATE(
+    SUM('fact_employees'[estimated_replacement_cost]),
+    'fact_employees'[predicted_risk_tier] = "High Risk"
+)
+
+Avg Replacement Cost per High Risk Employee $ = 
+DIVIDE(
+    [High Risk Replacement Exposure $],
+    [High Risk Headcount],
+    0
+)
+
+Department Financial Exposure Ranked = 
+RANKX(
+    ALL('dim_department'[department_name]),
+    [High Risk Replacement Exposure $],
+    ,
+    DESC,
+    Dense
+)
+
+
+// ------------------------------------------------------------------------------
+// FOLDER 5: WHAT-IF ATTRITION & RETENTION SIMULATION
+// ------------------------------------------------------------------------------
+
+WhatIf OverTime Reduction Pct = 
+// Connects to a What-If parameter slicer (0% to 50% in steps of 5%)
+SELECTEDVALUE('WhatIf_OverTime_Parameter'[OverTime Reduction], 0.20)
+
+WhatIf Salary Correction Pct = 
+// Connects to a What-If parameter slicer (0% to 30% in steps of 5%)
+SELECTEDVALUE('WhatIf_Salary_Parameter'[Salary Increase], 0.10)
+
+Simulated Attrition Prevention Headcount = 
+// Evaluates how many departures can be averted by curbing overtime in the high-risk cohort
+VAR _CohortAtRisk = [OT & Low Income Attrition Count]
+VAR _Efficacy = [WhatIf OverTime Reduction Pct] * 0.70 + [WhatIf Salary Correction Pct] * 0.30
+RETURN
+ROUND(_CohortAtRisk * _Efficacy, 0)
+
+Simulated Cost Savings ROI $ = 
+// Financial savings achieved by avoiding recruitment and replacement costs
+VAR _SavedHeadcount = [Simulated Attrition Prevention Headcount]
+VAR _AvgReplacementCost = 80000 // Average baseline replacement cost across vulnerable tiers
+RETURN
+_SavedHeadcount * _AvgReplacementCost

@@ -1,0 +1,30 @@
+{
+  "name": "HR Attrition Intelligence Theme",
+  "dataColors": [
+    "#E11D48",
+    "#2563EB",
+    "#0D9488",
+    "#F59E0B",
+    "#8B5CF6",
+    "#EC4899",
+    "#0284C7",
+    "#10B981"
+  ],
+  "background": "#F8FAFC",
+  "foreground": "#0F172A",
+  "tableAccent": "#2563EB",
+  "visualStyles": {
+    "*": {
+      "*": {
+        "outspace": [{ "color": { "solid": { "color": "#F8FAFC" } } }],
+        "border": [{ "show": true, "color": { "solid": { "color": "#E2E8F0" } }, "radius": 8 }]
+      }
+    },
+    "card": {
+      "*": {
+        "labels": [{ "color": { "solid": { "color": "#0F172A" } }, "fontSize": 24 }],
+        "categoryLabels": [{ "color": { "solid": { "color": "#64748B" } }, "fontSize": 10 }]
+      }
+    }
+  }
+}

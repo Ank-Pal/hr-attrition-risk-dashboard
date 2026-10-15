@@ -1,0 +1,4 @@
+Department,Total_Headcount,Attrition_Count,Empirical_Attrition_Rate_Pct,Avg_Predicted_Risk_Pct,High_Risk_Headcount,High_Risk_Proportion_Pct,OverTime_Saturation_Pct,Below_Median_Income_Pct,Avg_Monthly_Income_USD,Composite_Risk_Index,High_Risk_Financial_Exposure_USD
+Sales,446,92,20.63,20.66,69,15.47,28.7,34.53,6959.17,64.9,6624126.0
+Human Resources,63,12,19.05,17.84,7,11.11,26.98,55.56,6654.51,63.5,520848.0
+Research & Development,961,133,13.84,14.24,90,9.37,28.2,56.82,6281.25,56.9,5491494.0
